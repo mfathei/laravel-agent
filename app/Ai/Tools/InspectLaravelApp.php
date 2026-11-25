@@ -27,6 +27,8 @@ class InspectLaravelApp implements Tool
 
         return match ($action) {
             'about' => $this->about(),
+            'routes' => $this->routes(),
+            'packages' => $this->packages(),
             'default' => 'Unknown action',
         };
     }
@@ -34,6 +36,16 @@ class InspectLaravelApp implements Tool
     public function about(): string
     {
         return Process::run('php artisan about')->output();
+    }
+
+    public function packages(): string
+    {
+        return Process::run('composer show --direct')->output();
+    }
+
+    public function routes(): string
+    {
+        return Process::run('php artisan route:list --except-vendor')->output();
     }
 
     /**
